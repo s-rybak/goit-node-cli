@@ -1,6 +1,8 @@
-import { fs } from "fs/promises";
+import fs from "fs/promises";
 import path from "path";
+import { fileURLToPath } from "url";
 
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const contactsPath = path.join(__dirname, "db/contacts.json");
 
 /**
@@ -68,7 +70,7 @@ async function removeContact(contactId) {
 async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts();
-    const id = getNewContactId(contacts);
+    const id = getNewContactId();
     const newContact = { id, name, email, phone };
     contacts.push(newContact);
     await saveContacts(contacts);
@@ -90,16 +92,17 @@ async function saveContacts(contacts) {
     printError(error);
   }
 }
+
 /**
  * Returns id for the new contact.
  *
- * @param {Array<Object>} contacts
  * @returns
  */
-function getNewContactId(contacts) {
-  return contacts.length > 0
-    ? Math.max(...contacts.map(({ id }) => id)) + 1
-    : 1;
+function getNewContactId() {
+  return (new Date().getTime() + Math.random() * 1000)
+    .toString(32)
+    .replace(".", (Math.random() * 1000).toString(32).replace(".", ""))
+    .slice(0, 21);
 }
 
 /**
