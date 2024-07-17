@@ -1,0 +1,23 @@
+{
+  "name": "Node CLI App",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-rybak/goit-node-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s-rybak/goit-node-cli/issues"
+  },
+  "homepage": "https://github.com/s-rybak/goit-node-cli#readme",
+  "dependencies": {
+    "commander": "^12.1.0"
+  }
+}
