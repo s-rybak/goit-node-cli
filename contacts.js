@@ -1,9 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
-import { fileURLToPath } from "url";
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
-const contactsPath = path.join(__dirname, "db/contacts.json");
+const contactsPath = path.resolve("db", "contacts.json");
 
 /**
  * Returns the list of contacts.
@@ -27,11 +25,7 @@ async function listContacts() {
  * @returns {Promise<Object|null>} - The contact
  */
 async function getContactById(contactId) {
-  try {
-    return (await listContacts()).find(({ id }) => id === contactId) ?? null;
-  } catch (error) {
-    printError(error);
-  }
+  return (await listContacts()).find(({ id }) => id === contactId) ?? null;
 }
 
 /**
@@ -42,21 +36,17 @@ async function getContactById(contactId) {
  * @returns
  */
 async function removeContact(contactId) {
-  try {
-    const contacts = await listContacts();
-    const idx = contacts.findIndex(({ id }) => id === contactId);
+  const contacts = await listContacts();
+  const idx = contacts.findIndex(({ id }) => id === contactId);
 
-    if (idx === -1) {
-      return null;
-    }
-
-    const [removedContact] = contacts.splice(idx, 1);
-
-    await saveContacts(contacts);
-    return removedContact;
-  } catch (error) {
-    printError(error);
+  if (idx === -1) {
+    return null;
   }
+
+  const [removedContact] = contacts.splice(idx, 1);
+
+  await saveContacts(contacts);
+  return removedContact;
 }
 
 /**
@@ -68,16 +58,12 @@ async function removeContact(contactId) {
  * @returns {Promise<{Object}>} - The new contact
  */
 async function addContact(name, email, phone) {
-  try {
-    const contacts = await listContacts();
-    const id = getNewContactId();
-    const newContact = { id, name, email, phone };
-    contacts.push(newContact);
-    await saveContacts(contacts);
-    return newContact;
-  } catch (error) {
-    printError(error);
-  }
+  const contacts = await listContacts();
+  const id = getNewContactId();
+  const newContact = { id, name, email, phone };
+  contacts.push(newContact);
+  await saveContacts(contacts);
+  return newContact;
 }
 
 /**
